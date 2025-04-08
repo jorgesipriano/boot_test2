@@ -1,20 +1,23 @@
-# Usa imagem oficial do Node.js
+# Usa a imagem oficial do Node.js
 FROM node:18
 
-# Cria diretório de trabalho
+# Cria e define o diretório de trabalho
 WORKDIR /app
 
-# Copia os arquivos de dependência
-COPY package*.json ./
-
-# Instala dependências
-RUN npm install
-
-# Copia o restante do projeto
+# Copia os arquivos do projeto para o contêiner
 COPY . .
 
-# Expõe a porta usada pela app (padrão Fly = 8080)
-EXPOSE 8080
+# Entra na pasta onde está o bot
+WORKDIR /app/whats_bot
 
-# Comando para rodar a app
+# Instala as dependências
+RUN npm install
+
+# Define a variável de ambiente (opcional)
+ENV NODE_ENV=production
+
+# Expõe a porta (pode ser 3000 ou 8080, se estiver usando uma específica)
+EXPOSE 3000
+
+# Roda o script "start" do package.json
 CMD ["npm", "start"]
