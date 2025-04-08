@@ -1,23 +1,38 @@
-# Usa a imagem oficial do Node.js
 FROM node:18
 
-# Cria e define o diretório de trabalho
+# Instalar dependências do sistema para o Chromium
+RUN apt-get update && apt-get install -y \
+    wget \
+    ca-certificates \
+    fonts-liberation \
+    libappindicator3-1 \
+    libasound2 \
+    libatk-bridge2.0-0 \
+    libatk1.0-0 \
+    libcups2 \
+    libdbus-1-3 \
+    libgdk-pixbuf2.0-0 \
+    libnspr4 \
+    libnss3 \
+    libx11-xcb1 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxrandr2 \
+    xdg-utils \
+    --no-install-recommends \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Instalar dependências Node
 WORKDIR /app
-
-# Copia os arquivos do projeto para o contêiner
-COPY . .
-
-# Entra na pasta onde está o bot
-WORKDIR /app/whats_bot
-
-# Instala as dependências
+COPY package*.json ./
 RUN npm install
 
-# Define a variável de ambiente (opcional)
-ENV NODE_ENV=production
+# Copiar código da aplicação
+COPY . .
 
-# Expõe a porta (pode ser 3000 ou 8080, se estiver usando uma específica)
+# Expor porta
 EXPOSE 3000
 
-# Roda o script "start" do package.json
+# Rodar app
 CMD ["npm", "start"]
