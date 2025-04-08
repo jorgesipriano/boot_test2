@@ -1,20 +1,20 @@
-# Usa a imagem oficial do Node.js
+# Usa imagem oficial do Node.js
 FROM node:18
 
-# Define o diretório de trabalho no container
+# Cria diretório de trabalho
 WORKDIR /app
 
 # Copia os arquivos de dependência
 COPY package*.json ./
 
-# Instala as dependências do projeto
+# Instala dependências
 RUN npm install
 
-# Copia o restante dos arquivos do projeto
+# Copia o restante do projeto
 COPY . .
 
-# Expõe a porta 8080
+# Expõe a porta usada pela app (padrão Fly = 8080)
 EXPOSE 8080
 
-# Comando para iniciar a aplicação
+# Comando para rodar a app
 CMD ["npm", "start"]
